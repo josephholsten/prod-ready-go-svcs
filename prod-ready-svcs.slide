@@ -1,7 +1,6 @@
 Services in Go: from Proof-of-Concept to Production
 
-
-01:00 20 August 2013
+05:00 5 February 2014
 Tags: ops, devops, go
 
 Joseph Anthony Pasquale Holsten
@@ -29,15 +28,16 @@ get into production
 - deploy
 
 gracefully change production
+
 - configure services
 - coordinate services
 - manage change
 
 tuning, planning and debuging
+
 - metrics
 - logging
 - monitoring
-
 
 * getting into production
 
