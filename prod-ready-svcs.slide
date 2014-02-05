@@ -1,0 +1,256 @@
+Services in Go: from Proof-of-Concept to Production
+
+
+01:00 20 August 2013
+Tags: ops, devops, go
+
+Joseph Anthony Pasquale Holsten
+Info Janitor, Simply Measured
+joseph@josephholsten.com
+http://josephholsten.com/
+@josephholsten
+
+* who are you?
+
+* have you ever?
+
+- set up a home server?
+- had the hard drive fail?
+- have an update go wrong?
+- have a dependency conflict when installing?
+- have it become mysteriously slow?
+
+* a day in the life
+
+get into production
+
+- automate builds
+- manage dependencies
+- deploy
+
+gracefully change production
+- configure services
+- coordinate services
+- manage change
+
+tuning, planning and debuging
+- metrics
+- logging
+- monitoring
+
+
+* getting into production
+
+- build automation
+- dependencies
+- installation
+
+* automation
+
+per travis
+
+	$ go get -d -v . # only download
+	$ go build -v .
+	$ go test -v
+
+* dependencies
+
+	$ go get
+
+* built in support for hosted repos
+* doesn't support locking to revisions
+
+github.com/kr/godep
+
+	{
+		"ImportPath": "github.com/kr/hk",
+		"GoVersion": "go1.1.2",
+		"Deps": [
+			{
+				"ImportPath": "code.google.com/p/go-netrc/netrc",
+				"Rev": "28676070ab99"
+			},
+			{
+				"ImportPath": "github.com/kr/binarydist",
+				"Rev": "3380ade90f8b0dfa3e363fd7d7e941fa857d0d13"
+			}
+		]
+	}
+
+* installation
+
+just drop it!
+
+
+* gracefully change production
+- configure services
+- coordinate services
+- manage change
+
+* local configuration
+
+- `json`
+- `flag`
+- `os.Getenv`
+- lua plugins
+
+* cross-system configuration
+
+- zookeeper
+- etcd
+- serf
+
+* signals
+
+	package main
+	
+	import (
+		"fmt"
+		"os"
+		"os/signal"
+		"time"
+	)
+	
+	func main() {
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, os.Interrupt, os.Kill)
+		go func() {
+			<-c
+			fmt.Println("Received Interrupt")
+			os.Exit(1)
+		}()
+	
+		for {
+			time.Sleep(10 * time.Second)
+		}
+	}
+
+* services
+
+- not perfect yet
+- don't daemonize yourself
+- systemd, upstart, smf, runit
+
+
+* tuning, planning and debuging
+
+what's the problem?
+
+- crashing
+- incorrect results
+- races or deadlocks
+- performance
+
+* printf
+
+- `fmt`
+	fmt.Print(")
+	fmt.Printf("ooh, an error: %v", err)
+
+- github.com/davecgh/go-spew: deep pretty print
+
+	(main.Foo) {
+	 unexportedField: (*main.Bar)(0xf84002e210)({
+	  flag: (main.Flag) flagTwo,
+	  data: (uintptr) <nil>
+	 }),
+	 ExportedField: (map[interface {}]interface {}) {
+	  (string) "one": (bool) true
+	 }
+	}
+	([]uint8) {
+	 00000000  11 12 13 14 15 16 17 18  19 1a 1b 1c 1d 1e 1f 20  |............... |
+	 00000010  21 22 23 24 25 26 27 28  29 2a 2b 2c 2d 2e 2f 30  |!"#$%&'()*+,-./0|
+	 00000020  31 32                                             |12|
+	}
+
+
+* logging
+
+- log
+
+	log.Fatalf("Error whorling frobs: %v", err)
+
+- syslog: totally different api from log
+
+	log.Err(fmt.Sprintf("Error whorling frobs: %v", err))
+
+- github.com/golang/glog
+
+	if glog.V(2) {
+		glog.Info("Starting transaction...")
+	}
+
+* metrics
+
+- expvar: expose stats via http
+- github.com/rcrowley/go-metrics: ala coda hale
+
+* profiling
+
+perftools' pprof: http://blog.golang.org/profiling-go-programs
+
+Add this line
+
+	pprof.StartCPUProfile(file)
+
+Run the profiler
+
+	$ go tool pprof hello-world hello-world.prof
+	Welcome to pprof!  For help, type 'help'.
+	(pprof) web
+
+The profiling tools are awesome. It's very nice to be able to load up program's profile output, type "web" at the command line, and then get a browser window showing you a graph of where all you CPU cycles are being spent, and where you memory allocations are happening.
+- rob miller
+
+.image http://blog.golang.org/profiling-go-programs_havlak1a-75.png
+
+* debugging
+
+http://golang.org/doc/gdb
+
+(on os x: you'll need gdb 7+)
+
+	$ gdb test 
+	Reading symbols from /Users/joseph/src/com/golang/test...done.
+	(gdb) source $GOROOT/go/src/pkg/runtime/runtime-gdb.py
+	(gdb) start
+	(gdb) advance 13
+	(gdb) info locals
+	xs =  []int
+	n = 5
+	(gdb) info goroutines
+	* 1  running syscall.Syscall
+	  2 runnable runtime.goexit
+
+
+* The reason I'm here:
+
+heka - log aggregator
+lumberjack - log shipper
+
+nsq - distributed queue
+packer - vm image builder
+docker - container toolkit
+
+doozer - highly consistant store
+etcd - consistent config service
+serf - gossip network
+
+
+*  conclusion
+
+- for second-systems, not prototypes
+- plenty of room for improvement
+- old stuff works great
+- `
+
+
+* thanks
+
+- Jordan Sissel
+- Rob Miller
+- John E. Vincent
+- Justin Huff
+- Mitchell Hashimoto
+- Armon Dadgar
