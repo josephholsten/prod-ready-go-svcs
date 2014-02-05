@@ -21,23 +21,9 @@ http://josephholsten.com/
 
 * a day in the life
 
-get into production
-
-- automate builds
-- manage dependencies
-- deploy
-
-gracefully change production
-
-- configure services
-- coordinate services
-- manage change
-
-tuning, planning and debuging
-
-- metrics
-- logging
-- monitoring
+- get into production
+- gracefully change production
+- tuning, planning and debuging
 
 * getting into production
 
