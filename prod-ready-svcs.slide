@@ -43,10 +43,10 @@ per travis
 
 	$ go get
 
-* built in support for hosted repos
-* doesn't support locking to revisions
+- built in support for hosted repos
+- doesn't support locking to revisions
 
-github.com/kr/godep
+`github.com/kr/godep` package
 
 	{
 		"ImportPath": "github.com/kr/hk",
@@ -75,9 +75,9 @@ just drop it!
 
 * local configuration
 
-- `json`
-- `flag`
-- `os.Getenv`
+- `json` package
+- `flag` package
+- `os.Getenv()`
 - lua plugins
 
 * cross-system configuration
@@ -111,7 +111,7 @@ just drop it!
 		}
 	}
 
-* services
+* process management
 
 - not perfect yet
 - don't daemonize yourself
@@ -129,11 +129,11 @@ what's the problem?
 
 * printf
 
-- `fmt`
+- `fmt` package
 	fmt.Print(")
 	fmt.Printf("ooh, an error: %v", err)
 
-- github.com/davecgh/go-spew: deep pretty print
+- `github.com/davecgh/go-spew` package: deep pretty print
 
 	(main.Foo) {
 	 unexportedField: (*main.Bar)(0xf84002e210)({
@@ -144,7 +144,7 @@ what's the problem?
 	  (string) "one": (bool) true
 	 }
 	}
-	([]uint8) {
+	([]uint8) { 
 	 00000000  11 12 13 14 15 16 17 18  19 1a 1b 1c 1d 1e 1f 20  |............... |
 	 00000010  21 22 23 24 25 26 27 28  29 2a 2b 2c 2d 2e 2f 30  |!"#$%&'()*+,-./0|
 	 00000020  31 32                                             |12|
@@ -153,15 +153,15 @@ what's the problem?
 
 * logging
 
-- log
+- `log` package
 
 	log.Fatalf("Error whorling frobs: %v", err)
 
-- syslog: totally different api from log
+- `log/syslog` package: totally different api from log
 
 	log.Err(fmt.Sprintf("Error whorling frobs: %v", err))
 
-- github.com/golang/glog
+- `github.com/golang/glog` package
 
 	if glog.V(2) {
 		glog.Info("Starting transaction...")
@@ -169,8 +169,8 @@ what's the problem?
 
 * metrics
 
-- expvar: expose stats via http
-- github.com/rcrowley/go-metrics: ala coda hale
+- `expvar` package: expose stats via http
+- `github.com/rcrowley/go-metrics` package: smart stats and outputs
 
 * profiling
 
@@ -185,9 +185,6 @@ Run the profiler
 	$ go tool pprof hello-world hello-world.prof
 	Welcome to pprof!  For help, type 'help'.
 	(pprof) web
-
-The profiling tools are awesome. It's very nice to be able to load up program's profile output, type "web" at the command line, and then get a browser window showing you a graph of where all you CPU cycles are being spent, and where you memory allocations are happening.
-- rob miller
 
 .image http://blog.golang.org/profiling-go-programs_havlak1a-75.png
 
@@ -223,14 +220,11 @@ doozer - highly consistant store
 etcd - consistent config service
 serf - gossip network
 
+* the future
 
-*  conclusion
-
-- for second-systems, not prototypes
 - plenty of room for improvement
 - old stuff works great
-- `
-
+- remember it's all one system
 
 * thanks
 
