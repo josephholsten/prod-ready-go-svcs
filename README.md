@@ -60,6 +60,13 @@ package.
 [Serf](http://www.serfdom.io) provides fast membership discovery, event
 messaging, and (in 0.4) key-value tags.
 
+Oh, and remember how I said I once found a useful go library on
+launchpad? That's Canonical's zookeeper client
+[`gozk`](https://wiki.ubuntu.com/gozk), available in the
+[launchpad.net/gozk](https://launchpad.net/gozk) package. (Thanks [Neno
+Lakinski](https://github.com/nenadl)!)
+
+
 ### Signal Handling
 
 GNU libc explains why it's not possible to handle SIGKILL in its [Termination
@@ -132,7 +139,6 @@ Kisiel](http://www.kamilkisiel.net)!)
 ### TODO
 
 * Document opscode's chef-server runit setup
-* Point to zookeeper client code
 
 ## Thanks
 
